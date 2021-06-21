@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Rfm291/employeetracker#readme",
   "dependencies": {
     "inquirer": "^8.1.1",
+    "mysql": "^2.18.1",
     "sequelize": "^6.6.2"
   }
 }
