@@ -1,10 +1,9 @@
-const store = require()
-const inquirer = require('inquirer')
-const questions = require('./utils/questions')
-const {menu, searchByName} = require('./utils/questions')
+const store = require('./db/store');
+const inquirer = require('inquirer');
+const questions = require('./utils/questions');
 
 async function userMenu () {
-    const { choice } = await inquirer.prompt(menu);
+    const { choice } = await inquirer.prompt(questions.menu);
 
     const formatedChoices = choice.toLowerCase().trim();
     switch (formatedChoices){
@@ -14,8 +13,36 @@ async function userMenu () {
 }
 
 async function addEmployee(){
-    const {name} = inquirer.prompt(questions.querysearchByName)
-    
+    try{
+    const departments = await store.getDepartments()
+    const role = await store.getRole()
+    console.log(departments)
+    console.log(role)
+    const roleNames = role.map(role => role.title)
+
+    const employeeAnswers = await inquirer.prompt([
+        ...questions.addEmployee,
+        // which department?
+        {
+            name: "department",
+            type: "list",
+            message: "Which Department?",
+            choices: departments
+        },
+        // what role?
+        {
+            name: "role",
+            type: "list",
+            message: "Which role?",
+            choices: roleNames
+        },
+    ])
+    console.log(employeeAnswers)
+    // Create new employee
+    }
+    catch(e){
+        console.log(e)
+    }
 
     userMenu();
 }
